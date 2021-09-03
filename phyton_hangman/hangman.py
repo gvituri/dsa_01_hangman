@@ -2,7 +2,7 @@ import random
 
 class Match():
 
-    board_states = {
+    hang_states = {
         0: [" ╒══╗ ",
             "    ║ ",
             "    ║ ",
@@ -63,7 +63,7 @@ class Match():
         return list(hidden_word)
 
     def reset_hang(self):
-        return Match.board_states[0]
+        return 0
 
     def start_game(self):
         while True:
@@ -86,7 +86,7 @@ class Match():
                 #ask for remtch'''
 
     def display_hang(self):
-        for line in self.hang:
+        for line in Match.hang_states[self.hang]:
             print(line)
 
     def display_hidden_word(self):
@@ -117,18 +117,25 @@ class Match():
         return False
 
     def check_guess(self, player_guess):
+        try:
+            self.word.index(player_guess)
+            self.right_guess(player_guess)
+        except ValueError:
+            self.wrong_guess(player_guess)
+
+    def right_guess(self, player_guess):
+        print("Correct Guess!")
         while True:
             try:
                 char_index = self.word.index(player_guess)
                 self.word[char_index] = "*"
                 self.hidden_word[char_index] = player_guess
             except ValueError:
-                print("The word doesn't contain the leter %s" % (player_guess))
-                self.wrong_guess()
                 break
 
-    def wrong_guess(self):
+    def wrong_guess(self, player_guess):
         print("Wrong Guess!")
+        self.hang += 1
 
 def import_dictionary():
     with open("dictionary.txt", "rt") as file:
