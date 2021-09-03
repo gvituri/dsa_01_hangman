@@ -2,7 +2,6 @@ import random
 
 class Match():
 
-    match_number = 0
     board_states = {
         0: [" ╒══╗ ",
             "    ║ ",
@@ -48,29 +47,45 @@ class Match():
             "════╩═"],
     }
 
-    def __init__(self, word):
-        self.word = word
+    def __init__(self, dictionary):
+        self.word = self.pick_random_word(dictionary)
         self.board = self.reset_board()
 
     def reset_board(self):
         return Match.board_states[0]
+
+    def pick_random_word(self, dictionary):
+        return dictionary[random.randint(0, (len(dictionary) - 1))].strip()
+
+    def start_game(self):
+        #game loop
+        #display hang
+        #display hidden word
+        #ask for input
+        #validate input
+        #test input against word
+        #call corresponding method
+            #unvail leter
+            #add body part
+        #test if game is over
+            #game is over on win
+                #anounce victory
+                #ask for rematch
+            #game is over on death
+                #anouce defeat
+                #ask for rematch
 
 def import_dictionary():
     with open("dictionary.txt", "rt") as file:
         dictionary = file.readlines()
         return dictionary
 
-def pick_random_word(dictionary):
-    return dictionary[random.randint(0, len(dictionary))].strip()
-
 def main():
     dictionary = import_dictionary()
     print(dictionary)
-    word = pick_random_word(dictionary)
-    print(word)
-    match = Match(word)
-    for line in match.board:
-        print(line)
+    print(len(dictionary))
+    match = Match(dictionary)
+    match.start_game()
 
 if __name__ == "__main__":
     main()
