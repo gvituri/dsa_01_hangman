@@ -58,7 +58,7 @@ class Match():
         return dictionary[random.randint(0, (len(dictionary) - 1))].strip()
 
     def start_game(self):
-        #game loop
+        ''''#game loop
         #display hang
         #display hidden word
         #ask for input
@@ -73,8 +73,8 @@ class Match():
                 #ask for rematch
             #game is over on death
                 #anouce defeat
-                #ask for rematch
-
+                #ask for remtch'''
+        
 def import_dictionary():
     with open("dictionary.txt", "rt") as file:
         dictionary = file.readlines()
