@@ -191,8 +191,6 @@ def import_dictionary():
 
 def main():
     dictionary = import_dictionary()
-    print(dictionary)
-    print(len(dictionary))
     match = Match(dictionary)
     match.start_game()
 
