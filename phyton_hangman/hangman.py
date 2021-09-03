@@ -49,21 +49,31 @@ class Match():
 
     def __init__(self, dictionary):
         self.word = self.pick_random_word(dictionary)
-        self.board = self.reset_board()
-
-    def reset_board(self):
-        return Match.board_states[0]
+        self.hidden_word = self.hide_word()
+        self.played_leters = ""
+        self.hang = self.reset_hang()
 
     def pick_random_word(self, dictionary):
-        return dictionary[random.randint(0, (len(dictionary) - 1))].strip()
+        return list(dictionary[random.randint(0, (len(dictionary) - 1))].strip())
+
+    def hide_word(self):
+        hidden_word = ""
+        for leter in range(len(self.word)):
+            hidden_word += "_"
+        return list(hidden_word)
+
+    def reset_hang(self):
+        return Match.board_states[0]
 
     def start_game(self):
-        ''''#game loop
-        #display hang
-        #display hidden word
-        #ask for input
-        #validate input
-        #test input against word
+        while True:
+            self.display_hang()
+            self.display_hidden_word()
+            self.display_played_leters()
+            player_guess = self.ask_for_leter()
+            self.played_leters += player_guess
+            self.check_guess(player_guess)
+        '''#game loop
         #call corresponding method
             #unvail leter
             #add body part
@@ -74,7 +84,52 @@ class Match():
             #game is over on death
                 #anouce defeat
                 #ask for remtch'''
-        
+
+    def display_hang(self):
+        for line in self.hang:
+            print(line)
+
+    def display_hidden_word(self):
+        print("".join(self.hidden_word))
+
+    def display_played_leters(self):
+        print("Played leters:")
+        for i in range(len(self.played_leters)):
+            print("%s" % (str(self.played_leters[i])), end=" ")
+        print()
+
+    def ask_for_leter(self):
+        while True:
+            try:
+                player_guess = input("Enter your leter guess: ").lower()
+                if not self.validate_input(player_guess):
+                    raise
+                break
+            except:
+                print("ERROR! Invalid input.")
+
+        return player_guess
+
+    def validate_input(self, player_input):
+        if len(player_input) == 1 and ord(player_input) in range(97, 123) \
+                and player_input not in self.played_leters:
+            return True
+        return False
+
+    def check_guess(self, player_guess):
+        while True:
+            try:
+                char_index = self.word.index(player_guess)
+                self.word[char_index] = "*"
+                self.hidden_word[char_index] = player_guess
+            except ValueError:
+                print("The word doesn't contain the leter %s" % (player_guess))
+                self.wrong_guess()
+                break
+
+    def wrong_guess(self):
+        print("Wrong Guess!")
+
 def import_dictionary():
     with open("dictionary.txt", "rt") as file:
         dictionary = file.readlines()
