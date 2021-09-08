@@ -1,4 +1,5 @@
 import random
+import os
 
 class Match():
 
@@ -65,9 +66,16 @@ class Match():
 
     def reset_hang(self):
         return 0
+    
+    def clearConsole():
+        command = 'clear'
+        if os.name in ('nt', 'dos'):  # If Machine is running on Windows, use cls
+            command = 'cls'
+        os.system(command)
 
     def start_game(self):
         while True:
+            clearConsole()
             self.display_hang()
             self.display_hidden_word()
             self.display_played_leters()
